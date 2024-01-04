@@ -9,12 +9,12 @@ class Preprocessing:
         self.target = train[target]
 
     def __geography(self):
-        self.X = pd.get_dummies(self.X, columns=['geography'])
-        self.test = pd.get_dummies(self.test, columns=['geography'])
+        self.X = pd.get_dummies(self.X, columns=['Geography'])
+        self.test = pd.get_dummies(self.test, columns=['Geography'])
 
-    def __gender(self, feat_fact):
-        self.X = pd.factorize(self.X.Gender, sort=True)
-        self.test = pd.factorize(self.test.Gender, sort=True)
+    def __gender(self):
+        self.X.loc[:,'Gender'], self.gender_uniques = pd.factorize(self.X.Gender, sort=True)
+        self.test.loc[:,'Gender'] = pd.factorize(self.test.Gender, sort=True)[0]
 
     def encoded(self):
         self.__geography()
