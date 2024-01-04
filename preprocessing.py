@@ -1,5 +1,5 @@
 import pandas as pd
-
+from sklearn.preprocessing import MinMaxScaler, StandardScaler
 
 
 class Preprocessing:
@@ -16,6 +16,10 @@ class Preprocessing:
         self.X.loc[:,'Gender'], self.gender_uniques = pd.factorize(self.X.Gender, sort=True)
         self.test.loc[:,'Gender'] = pd.factorize(self.test.Gender, sort=True)[0]
 
+    def _normal(self):
+        scaler = StandardScaler()
+    
+    
     def encoded(self):
         self.__geography()
         self.__gender()
