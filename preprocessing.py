@@ -1,5 +1,6 @@
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, RobustScaler
+
 
 class Preprocessing:
     def __geography(self):
@@ -9,7 +10,7 @@ class Preprocessing:
         self.data.loc[:, 'Gender'], self.gender_uniques = pd.factorize(self.data.Gender, sort=True)
 
     def __normal_fit_transform(self):
-        self.scaler = StandardScaler()
+        self.scaler = RobustScaler()
         col_norm = ['CreditScore', 'Age', 'Balance', 'Tenure', 'NumOfProducts', 'EstimatedSalary']
         self.data.loc[:, col_norm] = self.scaler.fit_transform(self.data[col_norm])
 
