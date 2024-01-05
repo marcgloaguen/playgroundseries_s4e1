@@ -1,32 +1,30 @@
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
+
 class Preprocessing:
+    def __init__(self, train: pd.DataFrame, test: pd.DataFrame, target: str):
+        self.X = train.drop(columns=target)
+        self.test = test
+        self.target = train[target]
+
     def __geography(self):
-        self.data = pd.get_dummies(self.data, columns=['Geography'])
+        self.X = pd.get_dummies(self.X, columns=['Geography'])
+        self.test = pd.get_dummies(self.test, columns=['Geography'])
 
     def __gender(self):
-        self.data.loc[:, 'Gender'], self.gender_uniques = pd.factorize(self.data.Gender, sort=True)
+        self.X.loc[:, 'Gender'], self.gender_uniques = pd.factorize(
+            self.X.Gender, sort=True
+            )
+        self.test.loc[:, 'Gender'] = pd.factorize(
+            self.test.Gender, sort=True
+            )[0]
 
-    def __normal_fit_transform(self):
-        self.scaler = StandardScaler()
-        col_norm = ['CreditScore', 'Age', 'Balance', 'Tenure', 'NumOfProducts', 'EstimatedSalary']
-        self.data.loc[:, col_norm] = self.scaler.fit_transform(self.data[col_norm])
-
-    def __normal_transform(self):
-        col_norm = ['CreditScore', 'Age', 'Balance', 'Tenure', 'NumOfProducts', 'EstimatedSalary']
-        self.data.loc[:, col_norm] = self.scaler.transform(self.data[col_norm])
-
-    def fit_transform(self, data: pd.DataFrame):
-        self.data = data
+    def _normal(self):
+        scaler = StandardScaler()
+    
+    
+    def encoded(self):
         self.__geography()
         self.__gender()
-        self.__normal_fit_transform()
-        return self.data
-
-    def transform(self, data: pd.DataFrame):
-        self.data = data
-        self.__geography()
-        self.__gender()
-        self.__normal_transform()
-        return self.data
+        return self.X, self.target, self.test
