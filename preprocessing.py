@@ -11,7 +11,7 @@ class Preprocessing:
 
     def __normal_fit_transform(self):
         self.scaler = RobustScaler()
-        col_norm = ['CreditScore', 'Age', 'Balance', 'Tenure', 'NumOfProducts', 'EstimatedSalary']
+        col_norm = ['CreditScore', 'Age', 'Balance', 'Tenure', 'NumOfProducts','EstimatedSalary']
         self.data.loc[:, col_norm] = self.scaler.fit_transform(self.data[col_norm])
 
     def __normal_transform(self):
