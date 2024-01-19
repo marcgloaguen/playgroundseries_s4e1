@@ -4,14 +4,15 @@ from sklearn.preprocessing import StandardScaler, PowerTransformer, MinMaxScaler
 
 class Preprocessing:
     def __geography(self):
-        self.data = pd.get_dummies(self.data, columns=['Geography'])
-
+        #self.data = pd.get_dummies(self.data, columns=['Geography'])
+        self.data.loc[:, 'Geography'] = self.data['Geography'] == "Germany"
+        
     def __gender(self):
         self.data.loc[:, 'Gender'], self.gender_uniques = pd.factorize(self.data.Gender, sort=True)
 
     def __normal_fit_transform(self):
         self.scaler = StandardScaler()
-        col_norm = ['CreditScore','EstimatedSalary']
+        col_norm = ['CreditScore', 'EstimatedSalary']
         self.data.loc[:, col_norm] = self.scaler.fit_transform(self.data[col_norm])
         
     def __normal_transform(self):
