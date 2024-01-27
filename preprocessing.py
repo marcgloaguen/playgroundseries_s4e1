@@ -1,11 +1,10 @@
 import pandas as pd
-from sklearn.preprocessing import StandardScaler, PowerTransformer, MinMaxScaler
+from sklearn.preprocessing import StandardScaler, PowerTransformer, MinMaxScaler, PolynomialFeatures
 
 
 class Preprocessing:
     def __geography(self):
-        #self.data = pd.get_dummies(self.data, columns=['Geography'])
-        self.data.loc[:, 'Geography'] = self.data['Geography'] == "Germany"
+        self.data = pd.get_dummies(self.data, columns=['Geography'])
         
     def __gender(self):
         self.data.loc[:, 'Gender'], self.gender_uniques = pd.factorize(self.data.Gender, sort=True)
@@ -36,23 +35,31 @@ class Preprocessing:
     def __MinMax_transform(self):
         col_norm = ['Tenure', 'NumOfProducts']
         self.data.loc[:, col_norm] = self.minmax.transform(self.data[col_norm])
+        
+    def __Poly_fit_transform(self):
+        self.poly = PolynomialFeatures(degree=2)
+        self.data = self.poly.fit_transform(self.data)
     
+    def __Poly_transform(self):
+        self.data = self.poly.transform(self.data)
     
     
     def fit_transform(self, data: pd.DataFrame):
         self.data = data
         self.__geography()
         self.__gender()
-        self.__normal_fit_transform()
-        self.__power_fit_transform()
-        self.__MinMax_fit_transform()
+        #self.__normal_fit_transform()
+        #self.__power_fit_transform()
+        #self.__MinMax_fit_transform()
+        self.__Poly_fit_transform()
         return self.data
 
     def transform(self, data: pd.DataFrame):
         self.data = data
         self.__geography()
         self.__gender()
-        self.__normal_transform()
-        self.__power_transform()
-        self.__MinMax_transform()
+        #self.__normal_transform()
+        #self.__power_transform()
+        #self.__MinMax_transform()
+        self.__Poly_transform()
         return self.data
